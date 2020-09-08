@@ -2,6 +2,7 @@ package com.itsara.todolist.services;
 
 import com.itsara.todolist.models.Tasks;
 import com.itsara.todolist.repositories.TasksRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,5 +35,11 @@ public class TasksService {
 
   public void deleteById(Long id) {
     tasksRepository.deleteById(id);
+  }
+
+  public void updateById(Tasks tasks) {
+    Tasks existingTasks = tasksRepository.getOne(tasks.getId());
+    BeanUtils.copyProperties(tasks, existingTasks, "id");
+    tasksRepository.saveAndFlush(existingTasks);
   }
 }

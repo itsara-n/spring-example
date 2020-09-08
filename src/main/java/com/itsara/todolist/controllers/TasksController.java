@@ -5,7 +5,6 @@ import com.itsara.todolist.services.TasksService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sun.rmi.runtime.Log;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,6 +35,11 @@ public class TasksController {
   @RequestMapping(value = "tasks/{id}", method = RequestMethod.DELETE)
   public void deleteTasksById(@PathVariable(required = true) Long id) {
     tasksService.deleteById(id);
+  }
+
+  @RequestMapping(value = "tasks", method = RequestMethod.PUT)
+  public void updateTasksById(@RequestBody(required = true) final Tasks tasks) {
+    tasksService.updateById(tasks);
   }
 
 }
