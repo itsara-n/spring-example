@@ -18,7 +18,7 @@ public class TasksController {
   @RequestMapping(value = "/tasks", method = RequestMethod.GET)
   public Response getAllTasks() {
     List<Task> tasks = tasksService.getAll();
-    Response response = new Response(HttpStatus.OK, HttpStatus.OK.value(), "Get all tasks success", tasks);
+    Response response = new Response(HttpStatus.OK, tasks);
     return response;
   }
 
@@ -26,25 +26,28 @@ public class TasksController {
   public Response getTasksById(@PathVariable(required = true) Long id) {
     List<Task> tasks = tasksService.getById(id);
     if (tasks.size() == 0) {
-      return new Response(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND.value(), "Get tasks id " + id + " failure", null);
+      return new Response(HttpStatus.NOT_FOUND, null);
     } else {
-      return new Response(HttpStatus.OK, HttpStatus.OK.value(), "Get tasks id " + id + " success", tasks);
+      return new Response(HttpStatus.OK, tasks);
     }
   }
 
   @RequestMapping(value = "/tasks/create", method = RequestMethod.POST)
-  public void postNewTasks(@RequestBody(required = true) final Task task) {
+  public Response postNewTasks(@RequestBody(required = true) final Task task) {
     tasksService.addNew(task);
+    return new Response(HttpStatus.OK, null);
   }
 
   @RequestMapping(value = "tasks/{id}", method = RequestMethod.DELETE)
-  public void deleteTasksById(@PathVariable(required = true) Long id) {
+  public Response deleteTasksById(@PathVariable(required = true) Long id) {
     tasksService.deleteById(id);
+    return new Response(HttpStatus.OK, null);
   }
 
   @RequestMapping(value = "tasks", method = RequestMethod.PUT)
-  public void updateTasksById(@RequestBody(required = true) final Task task) {
+  public Response updateTasksById(@RequestBody(required = true) final Task task) {
     tasksService.updateById(task);
+    return new Response(HttpStatus.OK, null);
   }
 
 }
