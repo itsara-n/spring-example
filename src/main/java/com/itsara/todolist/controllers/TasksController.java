@@ -1,6 +1,6 @@
 package com.itsara.todolist.controllers;
 
-import com.itsara.todolist.models.Tasks;
+import com.itsara.todolist.models.Task;
 import com.itsara.todolist.services.TasksService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,20 +16,20 @@ public class TasksController {
   protected TasksService tasksService;
 
   @RequestMapping(value = "/tasks", method = RequestMethod.GET)
-  public ResponseEntity<List<Tasks>> getAllTasks() {
-    List<Tasks> tasks = tasksService.getAll();
+  public ResponseEntity<List<Task>> getAllTasks() {
+    List<Task> tasks = tasksService.getAll();
     return ResponseEntity.ok(tasks);
   }
 
   @RequestMapping(value = "/tasks/{id}", method = RequestMethod.GET)
-  public ResponseEntity<List<Optional<Tasks>>> getTasksById(@PathVariable(required = true) Long id) {
+  public ResponseEntity<List<Optional<Task>>> getTasksById(@PathVariable(required = true) Long id) {
     System.out.println(tasksService.getById(id).size());
     return ResponseEntity.ok(tasksService.getById(id));
   }
 
   @RequestMapping(value = "/tasks/create", method = RequestMethod.POST)
-  public void postNewTasks(@RequestBody(required = true) final Tasks tasks) {
-    tasksService.addNew(tasks);
+  public void postNewTasks(@RequestBody(required = true) final Task task) {
+    tasksService.addNew(task);
   }
 
   @RequestMapping(value = "tasks/{id}", method = RequestMethod.DELETE)
@@ -38,8 +38,8 @@ public class TasksController {
   }
 
   @RequestMapping(value = "tasks", method = RequestMethod.PUT)
-  public void updateTasksById(@RequestBody(required = true) final Tasks tasks) {
-    tasksService.updateById(tasks);
+  public void updateTasksById(@RequestBody(required = true) final Task task) {
+    tasksService.updateById(task);
   }
 
 }

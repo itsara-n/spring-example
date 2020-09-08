@@ -6,7 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Tasks {
+public class Task {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -14,7 +14,7 @@ public class Tasks {
   private String name;
   private Boolean done;
 
-  public Tasks() {}
+  public Task() {}
 
   public Long getId() {
     return id;

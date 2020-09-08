@@ -1,6 +1,6 @@
 package com.itsara.todolist.services;
 
-import com.itsara.todolist.models.Tasks;
+import com.itsara.todolist.models.Task;
 import com.itsara.todolist.repositories.TasksRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,30 +16,30 @@ public class TasksService {
   @Autowired
   private TasksRepository tasksRepository;
 
-  public List<Tasks> getAll() {
+  public List<Task> getAll() {
     return tasksRepository.findAll();
   }
 
-  public List<Optional<Tasks>> getById(Long id) {
-    Optional<Tasks> task = tasksRepository.findById(id);
-    List<Optional<Tasks>> tasks = new ArrayList<>();
+  public List<Optional<Task>> getById(Long id) {
+    Optional<Task> task = tasksRepository.findById(id);
+    List<Optional<Task>> tasks = new ArrayList<>();
     if (task.isPresent()) {
       tasks.add(task);
     }
     return tasks;
   }
 
-  public void addNew(Tasks tasks) {
-    tasksRepository.save(tasks);
+  public void addNew(Task task) {
+    tasksRepository.save(task);
   }
 
   public void deleteById(Long id) {
     tasksRepository.deleteById(id);
   }
 
-  public void updateById(Tasks tasks) {
-    Tasks existingTasks = tasksRepository.getOne(tasks.getId());
-    BeanUtils.copyProperties(tasks, existingTasks, "id");
-    tasksRepository.saveAndFlush(existingTasks);
+  public void updateById(Task task) {
+    Task existingTask = tasksRepository.getOne(task.getId());
+    BeanUtils.copyProperties(task, existingTask, "id");
+    tasksRepository.saveAndFlush(existingTask);
   }
 }
