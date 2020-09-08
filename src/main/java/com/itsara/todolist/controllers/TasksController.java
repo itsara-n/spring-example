@@ -1,13 +1,13 @@
 package com.itsara.todolist.controllers;
 
+import com.itsara.todolist.models.Response;
 import com.itsara.todolist.models.Task;
 import com.itsara.todolist.services.TasksService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class TasksController {
@@ -16,15 +16,20 @@ public class TasksController {
   protected TasksService tasksService;
 
   @RequestMapping(value = "/tasks", method = RequestMethod.GET)
-  public ResponseEntity<List<Task>> getAllTasks() {
+  public Response getAllTasks() {
     List<Task> tasks = tasksService.getAll();
-    return ResponseEntity.ok(tasks);
+    Response response = new Response(HttpStatus.OK, HttpStatus.OK.value(), "Get all tasks success", tasks);
+    return response;
   }
 
   @RequestMapping(value = "/tasks/{id}", method = RequestMethod.GET)
-  public ResponseEntity<List<Optional<Task>>> getTasksById(@PathVariable(required = true) Long id) {
-    System.out.println(tasksService.getById(id).size());
-    return ResponseEntity.ok(tasksService.getById(id));
+  public Response getTasksById(@PathVariable(required = true) Long id) {
+    List<Task> tasks = tasksService.getById(id);
+    if (tasks.size() == 0) {
+      return new Response(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND.value(), "Get tasks id " + id + " failure", null);
+    } else {
+      return new Response(HttpStatus.OK, HttpStatus.OK.value(), "Get tasks id " + id + " success", tasks);
+    }
   }
 
   @RequestMapping(value = "/tasks/create", method = RequestMethod.POST)

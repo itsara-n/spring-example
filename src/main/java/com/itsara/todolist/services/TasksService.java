@@ -20,11 +20,11 @@ public class TasksService {
     return tasksRepository.findAll();
   }
 
-  public List<Optional<Task>> getById(Long id) {
+  public List<Task> getById(Long id) {
     Optional<Task> task = tasksRepository.findById(id);
-    List<Optional<Task>> tasks = new ArrayList<>();
+    List<Task> tasks = new ArrayList<>();
     if (task.isPresent()) {
-      tasks.add(task);
+      tasks.add(task.get());
     }
     return tasks;
   }
