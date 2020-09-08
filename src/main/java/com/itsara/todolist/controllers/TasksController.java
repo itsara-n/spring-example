@@ -33,4 +33,9 @@ public class TasksController {
     tasksService.addNew(tasks);
   }
 
+  @RequestMapping(value = "tasks/{id}", method = RequestMethod.DELETE)
+  public void deleteTasks(@PathVariable(required = true) Long id) {
+    tasksService.deleteById(id);
+  }
+
 }
