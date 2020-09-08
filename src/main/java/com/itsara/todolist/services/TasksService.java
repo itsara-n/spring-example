@@ -1,0 +1,30 @@
+package com.itsara.todolist.services;
+
+import com.itsara.todolist.models.Tasks;
+import com.itsara.todolist.repositories.TasksRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class TasksService {
+
+  @Autowired
+  private TasksRepository tasksRepository;
+
+  public List<Tasks> getAll() {
+    return tasksRepository.findAll();
+  }
+
+  public List<Optional<Tasks>> getById(Long id) {
+    Optional<Tasks> task = tasksRepository.findById(id);
+    List<Optional<Tasks>> tasks = new ArrayList<>();
+    if (!tasks.isEmpty()) {
+      tasks.add(task);
+    }
+    return tasks;
+  }
+}
