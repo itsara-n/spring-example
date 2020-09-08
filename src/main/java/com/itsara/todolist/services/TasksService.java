@@ -22,9 +22,13 @@ public class TasksService {
   public List<Optional<Tasks>> getById(Long id) {
     Optional<Tasks> task = tasksRepository.findById(id);
     List<Optional<Tasks>> tasks = new ArrayList<>();
-    if (!tasks.isEmpty()) {
+    if (task.isPresent()) {
       tasks.add(task);
     }
     return tasks;
+  }
+
+  public void addNew(Tasks tasks) {
+    tasksRepository.save(tasks);
   }
 }

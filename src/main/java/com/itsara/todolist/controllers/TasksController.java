@@ -4,10 +4,8 @@ import com.itsara.todolist.models.Tasks;
 import com.itsara.todolist.services.TasksService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+import sun.rmi.runtime.Log;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +24,13 @@ public class TasksController {
 
   @RequestMapping(value = "/tasks/{id}", method = RequestMethod.GET)
   public ResponseEntity<List<Optional<Tasks>>> getTasksById(@PathVariable(required = true) Long id) {
+    System.out.println(tasksService.getById(id).size());
     return ResponseEntity.ok(tasksService.getById(id));
+  }
+
+  @RequestMapping(value = "/tasks/create", method = RequestMethod.POST)
+  public void postNewTasks(@RequestBody(required = true) final Tasks tasks) {
+    tasksService.addNew(tasks);
   }
 
 }

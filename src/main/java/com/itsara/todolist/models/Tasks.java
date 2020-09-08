@@ -14,10 +14,7 @@ public class Tasks {
   private String name;
   private Boolean done;
 
-  public Tasks(String name, Boolean done) {
-    this.name = name;
-    this.done = done;
-  }
+  public Tasks() {}
 
   public Long getId() {
     return id;
