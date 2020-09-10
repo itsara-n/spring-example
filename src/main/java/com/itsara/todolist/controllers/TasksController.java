@@ -5,6 +5,7 @@ import com.itsara.todolist.models.Task;
 import com.itsara.todolist.services.TasksService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,38 +17,60 @@ public class TasksController {
   protected TasksService tasksService;
 
   @RequestMapping(value = "/tasks", method = RequestMethod.GET)
-  public Response getAllTasks() {
+  public ResponseEntity<Response> getAllTasks() {
     List<Task> tasks = tasksService.getAll();
-    Response response = new Response(HttpStatus.OK, tasks);
-    return response;
+    Response responseBody = new Response(HttpStatus.OK, tasks);
+    return new ResponseEntity<Response>(responseBody, responseBody.getStatue());
   }
 
   @RequestMapping(value = "/tasks/{id}", method = RequestMethod.GET)
-  public Response getTasksById(@PathVariable(required = true) Long id) {
+  public ResponseEntity<Response> getTasksById(@PathVariable(required = true) Long id) {
     List<Task> tasks = tasksService.getById(id);
+    Response responseData = new Response();
     if (tasks.size() == 0) {
-      return new Response(HttpStatus.NOT_FOUND, null);
+      responseData.setHttpStatus(HttpStatus.NOT_FOUND);
+      responseData.setData(tasks);
     } else {
-      return new Response(HttpStatus.OK, tasks);
+      responseData.setHttpStatus(HttpStatus.OK);
+      responseData.setData(tasks);
     }
+    return new ResponseEntity<Response>(responseData, responseData.getStatue());
   }
 
   @RequestMapping(value = "/tasks/create", method = RequestMethod.POST)
-  public Response postNewTasks(@RequestBody(required = true) final Task task) {
-    tasksService.addNew(task);
-    return new Response(HttpStatus.OK, null);
+  public ResponseEntity<Response> postNewTasks(@RequestBody(required = true) final Task task) {
+    Response responseData = new Response();
+    try {
+      tasksService.addNew(task);
+      responseData.setHttpStatus(HttpStatus.OK);
+    } catch (Exception e) {
+      responseData.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    return new ResponseEntity<Response>(responseData, responseData.getStatue());
   }
 
   @RequestMapping(value = "tasks/{id}", method = RequestMethod.DELETE)
-  public Response deleteTasksById(@PathVariable(required = true) Long id) {
-    tasksService.deleteById(id);
-    return new Response(HttpStatus.OK, null);
+  public ResponseEntity<Response> deleteTasksById(@PathVariable(required = true) Long id) {
+    Response responseData = new Response();
+    try {
+      tasksService.deleteById(id);
+      responseData.setHttpStatus(HttpStatus.OK);
+    } catch (Exception e) {
+      responseData.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    return new ResponseEntity<Response>(responseData, responseData.getStatue());
   }
 
   @RequestMapping(value = "tasks", method = RequestMethod.PUT)
-  public Response updateTasksById(@RequestBody(required = true) final Task task) {
-    tasksService.updateById(task);
-    return new Response(HttpStatus.OK, null);
+  public ResponseEntity<Response> updateTasksById(@RequestBody(required = true) final Task task) {
+    Response responseData = new Response();
+    try {
+      tasksService.updateById(task);
+      responseData.setHttpStatus(HttpStatus.OK);
+    } catch (Exception e) {
+      responseData.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    return new ResponseEntity<Response>(responseData, responseData.getStatue());
   }
 
 }

@@ -16,11 +16,16 @@ public class Response {
     this.data = data;
   }
 
+  public void setHttpStatus(HttpStatus statue) {
+    this.statue = statue;
+    this.code = statue.value();
+  }
+
   public HttpStatus getStatue() {
     return statue;
   }
 
-  public void setStatue(HttpStatus statue) {
+  public void setStatus(HttpStatus statue) {
     this.statue = statue;
   }
 
